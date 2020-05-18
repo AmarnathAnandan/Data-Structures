@@ -1,0 +1,33 @@
+package executablee;
+
+//Java implementation to replace each node 
+//in binary tree with the sum of its inorder 
+//predecessor and successor 
+import java.util.*; 
+
+public class Solution{
+	public static void main() {
+		BinaryTree bt = new BinaryTree();
+		bt.root.key = 1;
+		bt.root.left.key = 2;
+		bt.root.left.left.key = 4;
+		bt.root.left.right.key = 5;
+		bt.root.right.key = 3;
+		bt.root.right.left.key = 6;
+		bt.root.right.right.key = 7;
+		
+		inordertraversal(bt.root);
+		
+		
+	}
+
+	private static void inordertraversal(Node root) {
+		// TODO Auto-generated method stub
+		if(root == null)
+			return;
+		
+		inordertraversal(root.left);
+		System.out.println(root.key);
+		inordertraversal(root.right);
+	}
+}

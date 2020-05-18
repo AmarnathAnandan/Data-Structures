@@ -1,0 +1,6 @@
+package executablee;
+
+//Java implementation to replace each node 
+//in binary tree with the sum of its inorder 
+//predecessor and successor 
+import java.util.*; 

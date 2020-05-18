@@ -1,0 +1,30 @@
+package executablee;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Scanner;
+
+
+public class BigD {
+	        //Input
+
+
+		    private static final Scanner scanner = new Scanner(System.in);
+
+		    public static void main(String[] args) {
+
+		        String A=scanner.next();
+		        
+		        StringBuilder b = new StringBuilder(A);
+              b.reverse();
+                if(A.equals(b.toString())) {
+                        System.out.println("Yes");
+                }else {
+                 System.out.println("No");
+                }
+		        		
+		    }
+}

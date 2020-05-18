@@ -1,0 +1,322 @@
+package executablee;
+
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
+
+class Node {
+	int key;
+	Node left, right;
+
+	Node(int data) {
+		key = data;
+		left = right = null;
+	}
+}
+
+class BinaryTree {
+	Node root;
+	int key;
+
+	BinaryTree() {
+		root = null;
+	}
+
+	public void levelOrder() {
+		int height = getHeight(root);
+		for (int i = 1; i <= height; i++) {
+			printGivenLevel(root, i);
+		}
+	}
+
+	private void printGivenLevel(Node root2, int level) {
+		if (root == null)
+			return;
+		if (level == 1) {
+			if (root2 != null && root2.key != 0)
+				System.out.print(root2.key + " ");
+		} else if (level > 1) {
+			printGivenLevel(root2.left, level - 1);
+			printGivenLevel(root2.right, level - 1);
+		}
+	}
+
+	public int getHeight(Node root) {
+		if (root == null)
+			return 0;
+		else {
+			int lheight = getHeight(root.left);
+			int rheight = getHeight(root.right);
+			if (lheight > rheight)
+				return lheight + 1;
+			else
+				return rheight + 1;
+		}
+	}
+
+	public void insertInorder(int i) {
+		Node temp = root;
+		Queue<Node> queue = new LinkedList<Node>();
+		queue.add(root);
+
+		while (!queue.isEmpty()) {
+			temp = queue.peek();
+			queue.remove();
+			if (temp == null)
+				break;
+			if (temp.left == null) {
+				temp.left = new Node(i);
+				break;
+			} else
+				queue.add(temp.left);
+			if (temp.right == null) {
+				temp.right = new Node(i);
+				break;
+			} else
+				queue.add(temp.right);
+		}
+	}
+
+	public void delete(int no) {
+		int last = getLastMostElement(root);
+		replaceWithInt(root, no, last);
+		deleteLastMostElement(root);
+	}
+
+	private void deleteLastMostElement(Node root) {
+		Node temp = root;
+		while (temp.right != null) {
+			temp = temp.right;
+			deleteLastMostElement(temp);
+		}
+		temp.key = 0;
+	}
+
+	private void replaceWithInt(Node root, int no, int last) {
+		Node temp = root;
+		Queue<Node> queue = new LinkedList<Node>();
+		queue.add(root);
+
+		while (!queue.isEmpty()) {
+			temp = queue.peek();
+			queue.remove();
+			if (temp == null)
+				break;
+			else if (temp.key == no) {
+				temp.key = last;
+				break;
+			}
+			if (temp.left != null) {
+				temp = temp.left;
+				queue.add(temp);
+			} else if (temp.right != null) {
+				temp = temp.right;
+				queue.add(temp);
+			} else {
+				queue.add(root.right);
+			}
+		}
+	}
+
+	private int getLastMostElement(Node node) {
+		Node temp = node;
+		while (temp.right != null) {
+			temp = temp.right;
+			getLastMostElement(temp);
+		}
+		return temp.key;
+	}
+
+	static boolean treeContinuous(Node root) {
+		Node temp = root;
+		Queue<Node> queue = new LinkedList<Node>();
+		queue.add(root);
+		Boolean stat = false;
+		while (!queue.isEmpty()) {
+			temp = queue.remove();
+			if (temp == null)
+				break;
+			else if (temp.left != null && temp.right != null) {
+				if ((temp.key - temp.left.key == 1) && (temp.right.key - temp.key == 1)) {
+					queue.add(temp.left);
+					queue.add(temp.right);
+					stat = true;
+				}
+			} else if (temp.left == null && temp.right != null) {
+				if ((temp.right.key - temp.key == 1)) {
+					queue.add(temp.right);
+					stat = true;
+				}
+			} else if (temp.left != null && temp.right == null) {
+				if ((temp.key - temp.left.key == 1)) {
+					queue.add(temp.left);
+					stat = true;
+				}
+			} else if (queue.poll() != null)
+				queue.remove();
+
+		}
+		return stat;
+	}
+
+	void inOrder(Node node) {
+		if (node == null) {
+			return;
+		}
+		inOrder(node.left);
+		System.out.printf("%s ", node.key);
+		inOrder(node.right);
+	}
+
+	public int isExpressionTree(Node root2) {
+		if (root2 == null)
+			return 0;
+		if (root2.left == null && root2.right == null)
+			return root2.key;
+
+		int leftSum = isExpressionTree(root2.left);
+		int rightSum = isExpressionTree(root2.right);
+
+		if (root2.key == '+')
+			return leftSum + rightSum;
+		if (root2.key == '-')
+			return leftSum - rightSum;
+		if (root2.key == '*')
+			return leftSum * rightSum;
+		return leftSum / rightSum;
+	}
+
+	public void getPostOrder(int[] in1, int[] pre, int n) {
+		// The first element in pre[] is
+		// always root, search it in in[]
+		// to find left and right subtrees
+		int root = search(in1, pre[0], n);
+
+		// If left subtree is not empty,
+		// print left subtree
+		if (root != 0)
+			getPostOrder(in1, Arrays.copyOfRange(pre, 1, n), root);
+
+		// If right subtree is not empty,
+		// print right subtree
+		if (root != n - 1)
+			getPostOrder(Arrays.copyOfRange(in1, root + 1, n), Arrays.copyOfRange(pre, 1 + root, n), n - root - 1);
+
+		// Print root
+		System.out.print(pre[0] + " ");
+	}
+
+	int search(int arr[], int x, int n) {
+		for (int i = 0; i < n; i++)
+			if (arr[i] == x)
+				return i;
+		return -1;
+	}
+
+	static void findPostOrderUtil(int pre[], int n, int minval, int maxval, INT preIndex) {
+
+// If entire preorder array is traversed then  
+// return as no more element is left to be  
+// added to post order array.  
+		if (preIndex.data == n)
+			return;
+
+// If array element does not lie in range specified,  
+// then it is not part of current subtree.  
+		if (pre[preIndex.data] < minval || pre[preIndex.data] > maxval) {
+			return;
+		}
+
+// Store current value, to be printed later, after  
+// printing left and right subtrees. Increment  
+// preIndex to find left and right subtrees,  
+// and pass this updated value to recursive calls.  
+		int val = pre[preIndex.data];
+		preIndex.data++;
+
+// All elements with value between minval and val  
+// lie in left subtree.  
+		findPostOrderUtil(pre, n, minval, val, preIndex);
+
+// All elements with value between val and maxval  
+// lie in right subtree.  
+		findPostOrderUtil(pre, n, val, maxval, preIndex);
+
+		System.out.print(val + " ");
+	}
+
+//Function to find postorder traversal.  
+	static void findPostOrder(int pre[], int n) {
+
+// To store index of element to be  
+// traversed next in preorder array.  
+// This is passed by reference to  
+// utility function.  
+		INT preIndex = new INT(0);
+
+		findPostOrderUtil(pre, n, Integer.MIN_VALUE, Integer.MAX_VALUE, preIndex);
+	}
+}
+
+public class BinaryTreeExperiments {
+
+	public static void main(String[] args) {
+
+		BinaryTree bt = new BinaryTree();
+		bt.root = new Node(13);
+		bt.root.left = new Node(12);
+		bt.root.left.left = new Node(4);
+		bt.root.left.right = new Node(19);
+		bt.root.right = new Node(10);
+		bt.root.right.left = new Node(16);
+		bt.root.right.right = new Node(9);
+//
+//		System.out.println("Inorder Traversal Of Binary Tree");
+//
+//		bt.levelOrder();
+////		System.out.println();
+////		bt.insertInorder(19);
+////		bt.levelOrder();
+//		System.out.println();
+//		bt.delete(12);
+//		bt.levelOrder();
+
+//		BinaryTree bt = new BinaryTree();
+//		bt.root = new Node(3);
+//		bt.root.left = new Node(2);
+//		bt.root.right = new Node(4);
+//		bt.root.left.left = new Node(1);
+//		bt.root.left.right = new Node(3);
+//		bt.root.right.right = new Node(5);
+//		if (bt.treeContinuous(bt.root))
+//			System.out.println("Yes");
+//		else
+//			System.out.println("No");
+
+//		bt.root = new Node('+');
+//		bt.root.left = new Node('*');
+//		bt.root.left.left = new Node(5);
+//		bt.root.left.right = new Node(4);
+//		bt.root.right = new Node('-');
+//		bt.root.right.left = new Node(100);
+//		bt.root.right.right = new Node('/');
+//		bt.root.right.right.left = new Node(20);
+//		bt.root.right.right.right = new Node(2);
+//		System.out.println(bt.isExpressionTree(bt.root));
+//		bt.inOrder(bt.root);
+
+//		int in1[] = { 4, 2, 5, 1, 3, 6 }; 
+//	    int pre[] = { 1, 2, 4, 5, 3, 6 }; 
+//	    int n = in1.length; 
+//		bt.getPostOrder(in1, pre, n);
+
+		int pre[] = { 40, 30, 35, 80, 100 };
+
+		int n = pre.length;
+
+		// Calling function
+		bt.findPostOrder(pre, n);
+
+	}
+
+}

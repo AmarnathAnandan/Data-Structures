@@ -1,0 +1,50 @@
+package executablee;
+// Java program to find the duplicate 
+import java.util.stream.*; 
+import java.util.*; 
+
+public class Test { 
+
+	// Main method 
+	public static void main(String[] args) 
+	{ 
+
+		// Create a Random object 
+		Random random = new Random(); 
+//
+//		IntStream 
+//
+//			// Generate the next integer 
+//			// using IntStream.generate() 
+//			// and Random.nextInt() 
+//			.generate(random::nextInt) 
+//
+//			// Print the IntStream 
+//			// using forEach() method. 
+//			.forEach(System.out::println); 
+		
+		  IntStream.Builder b = IntStream.builder(); 
+		  
+		  LongStream stream = LongStream.of(1L, 3L, 5L, 7L, 9L);
+		  
+		  Stream<Integer> op = Stream.of(4,5,6,7,8,9,0);
+		  
+		  DoubleStream 
+		  
+          // Iterate the DoubleStream with i 
+          // by incrementing the value with 1 
+          .generate((Math::random) ).limit(5)
+
+          // Print the DoubleStream 
+          // using forEach() method. 
+          .forEach(System.out::println); 
+		  
+		  
+	b.add(56);
+	
+	
+	
+	} 
+} 
+
+// elements in a Stream using Set 

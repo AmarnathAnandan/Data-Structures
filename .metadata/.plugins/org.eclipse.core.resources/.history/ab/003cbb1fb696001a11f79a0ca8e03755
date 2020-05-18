@@ -1,0 +1,51 @@
+package executablee;
+
+//Java implementation to replace each node 
+//in binary tree with the sum of its inorder 
+//predecessor and successor 
+import java.util.*; 
+
+class Temp{
+	int data;
+}
+
+public class Solution{
+	public static void main(String[] args) {
+		BinaryTree bt = new BinaryTree();
+		bt.root = new Node(1);
+		bt.root.left = new Node(2);
+		bt.root.left.left= new Node(4);
+		bt.root.left.right = new Node(5);
+		bt.root.right = new Node(3);
+		bt.root.right.left= new Node(6);
+		bt.root.right.right = new Node(7);
+		
+		preordertraversal(bt.root);
+		populatePredSucc(bt.root);
+		
+	}
+
+	private static void populatePredSucc(Node root) {
+		Vector<Integer> arr = new Vector<Integer>();
+		arr.add(0);
+		storeInorderTravArr(arr, root);
+		arr.add(0);
+		System.out.println(arr);
+	}
+
+	private static void storeInorderTravArr(Vector<Integer> arr, Node root) {
+		if(root == null)
+			return;
+		storeInorderTravArr(arr, root);
+		arr.add(root.key);
+		storeInorderTravArr(arr, root);
+	}
+
+	private static void preordertraversal(Node root) {
+		if(root == null)
+			return;
+		System.out.print(root.key + " ");
+		preordertraversal(root.left);
+		preordertraversal(root.right);
+	}
+}
